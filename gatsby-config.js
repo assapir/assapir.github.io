@@ -1,14 +1,14 @@
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Starter Blog`,
+    title: `מחשבות על תכנות`,
     author: {
-      name: `Kyle Mathews`,
-      summary: `who lives and works in San Francisco building useful things.`,
+      name: `אסף ספיר`,
+      summary: `מתכנת, לשעבר פרמדיק ואח.`,
     },
-    description: `A starter blog demonstrating what Gatsby can do.`,
-    siteUrl: `https://gatsbystarterblogsource.gatsbyjs.io/`,
+    description: `מחשבות על תכנות ובכלל`,
+    siteUrl: `https://assapir.github.io/`,
     social: {
-      twitter: `kylemathews`,
+      twitter: `meijin007`,
     },
   },
   plugins: [
@@ -112,8 +112,8 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `Gatsby Starter Blog`,
-        short_name: `GatsbyJS`,
+        name: `מחשבות על תכנות`,
+        short_name: `הבלוג של אסף ספיר`,
         start_url: `/`,
         background_color: `#ffffff`,
         theme_color: `#663399`,
@@ -121,8 +121,7 @@ module.exports = {
         icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
       },
     },
-    `gatsby-plugin-react-helmet`,
-    `gatsby-plugin-gatsby-cloud`,
+    `gatsby-plugin-react-helmet`
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,
