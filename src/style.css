@@ -311,6 +311,12 @@ a:focus {
   font-family: var(--font-heading);
 }
 
+.blog-post section p {
+  font-size: var(--fontSize-2);
+  font-family: var(--font-heading);
+  text-align: justify;
+}
+
 .blog-post-nav ul {
   margin: var(--spacing-0);
 }
