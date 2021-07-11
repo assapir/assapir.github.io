@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 4
 
       - name: Setup Node
         uses: actions/setup-node@v2
@@ -38,13 +40,13 @@ jobs:
       - name: 'Check for changes'
         run: |
           if [ -n "$(git status --porcelain)" ]; then
-            echo "::set-output name=has_changes::true"
+            echo "::set-output name=has_changes::1"
           fi
         id: status
         working-directory: ${{ env.OUTPUT_DIR }}
 
       - name: Publish blog
-        if: steps.status.outputs.has_changes == 'true'
+        if: steps.status.outputs.has_changes == '1'
         run: |
           git fetch
           git config --global user.email "me@ass.af"

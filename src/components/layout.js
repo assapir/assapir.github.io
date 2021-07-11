@@ -28,8 +28,9 @@ const Layout = ({ location, title, children }) => {
       <footer dir="ltr">
         <Bio />© {new Date().getFullYear()}, Built with
         {` `}
-        <a href="https://www.gatsbyjs.com">Gatsby</a>
-        Powered by <a href="https://pages.github.com">GitHub Pages</a>
+        <a href="https://www.gatsbyjs.com">Gatsby</a>.
+        {` `}
+        Hosted with <a href="https://pages.github.com">GitHub Pages</a>
       </footer>
     </div>
   )
