@@ -1,4 +1,5 @@
 import * as React from "react"
+import { useEffect } from "react"
 import { Link, graphql } from "gatsby"
 
 import Bio from "../components/bio"
@@ -6,7 +7,9 @@ import Layout from "../components/layout"
 import Seo from "../components/seo"
 
 const BlogIndex = ({ data, location }) => {
-  document.documentElement.dir = "rtl"
+  useEffect(() => {
+    document.documentElement.dir = "rtl"
+  })
   const siteTitle = data.site.siteMetadata?.title || `Title`
   const posts = data.allMarkdownRemark.nodes
 
