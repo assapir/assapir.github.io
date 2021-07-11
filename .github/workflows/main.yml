@@ -35,7 +35,16 @@ jobs:
       - name: Copy CNAME file
         run: cp CNAME public/
 
+      - name: 'Check for changes'
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "::set-output name=has_changes::true"
+          fi
+        id: status
+        working-directory: ${{ env.OUTPUT_DIR }}
+
       - name: Publish blog
+        if: steps.status.outputs.has_changes == 'true'
         run: |
           git fetch
           git config --global user.email "me@ass.af"
