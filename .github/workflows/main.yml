@@ -30,6 +30,7 @@ jobs:
             ${{ runner.os }}-node-
 
 
+      - run: git fetch
       - run: npm ci
       - run: npm run format
       - run: npm run build
