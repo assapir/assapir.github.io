@@ -47,7 +47,9 @@ const BlogIndex = ({ data, location }) => {
                       <span itemProp="headline">{title}</span>
                     </Link>
                   </h2>
-                  <small>{new Date(post.frontmatter.date).toLocaleDateString()}</small>
+                  <small>
+                    {new Date(post.frontmatter.date).toLocaleDateString()}
+                  </small>
                 </header>
                 <section>
                   <p
@@ -69,24 +71,24 @@ const BlogIndex = ({ data, location }) => {
 export default BlogIndex
 
 export const pageQuery = graphql`
-{
-  site {
-    siteMetadata {
-      title
-    }
-  }
-  allMarkdownRemark(sort: {fields: [frontmatter___date], order: DESC}) {
-    nodes {
-      excerpt(pruneLength: 200)
-      fields {
-        slug
-      }
-      frontmatter {
-        date
+  {
+    site {
+      siteMetadata {
         title
-        description
+      }
+    }
+    allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
+      nodes {
+        excerpt(pruneLength: 200)
+        fields {
+          slug
+        }
+        frontmatter {
+          date
+          title
+          description
+        }
       }
     }
   }
-}
 `

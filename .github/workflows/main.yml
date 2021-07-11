@@ -5,12 +5,40 @@ on:
     branches:
       - main
 
+env:
+  PAGES_BRANCH: 'gh-pages'
+  OUTPUT_DIR: 'public'
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: enriikke/gatsby-gh-pages-action@v2
+      - uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
         with:
-          access-token: ${{ secrets.ACCESS_TOKEN }}
-          deploy-branch: gh-pages
+          node-version: '16'
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+
+      - run: npm ci
+      - run: npm run format
+      - run: npm run build
+
+      - name: Publish blog
+        run: |
+          git init
+          git config --global user.email "me@ass.af"
+          git config --global user.name "Assaf Sapir"
+          git add .
+          git commit -m "Update blog files"
+          git push -f origin "${PAGES_BRANCH}"
+        working-directory: ${{ OUTPUT_DIR }}
