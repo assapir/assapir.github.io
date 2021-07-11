@@ -30,7 +30,7 @@ const Bio = () => {
   const author = data.site.siteMetadata?.author
 
   return (
-    <div className="bio">
+    <div className="bio" dir="rtl">
       {/* <StaticImage
         className="bio-avatar"
         layout="fixed"
@@ -42,10 +42,9 @@ const Bio = () => {
         alt="Profile picture"
       /> */}
       {author?.name && (
-        <p>
+        <span>
           נכתב על ידי <strong>{author.name}</strong> {author?.summary || null}
-          {` `}
-        </p>
+        </span>
       )}
     </div>
   )
