@@ -32,6 +32,9 @@ jobs:
       - run: npm run format
       - run: npm run build
 
+      - name: Copy CNAME file
+        run: cp CNAME public/
+
       - name: Publish blog
         run: |
           git fetch
