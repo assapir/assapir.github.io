@@ -41,4 +41,4 @@ jobs:
           git add .
           git commit -m "Update blog files"
           git push -f origin "${PAGES_BRANCH}"
-        working-directory: ${{ OUTPUT_DIR }}
+        working-directory: ${{ env.OUTPUT_DIR }}
