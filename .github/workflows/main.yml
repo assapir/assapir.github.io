@@ -37,7 +37,7 @@ jobs:
         run: |
           git config --global user.email "me@ass.af"
           git config --global user.name "Assaf Sapir"
-          git add .
+          git add -f .
           git commit -m "Update blog files"
           git push -f origin "${PAGES_BRANCH}"
         working-directory: ${{ env.OUTPUT_DIR }}
