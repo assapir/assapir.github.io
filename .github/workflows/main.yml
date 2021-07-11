@@ -34,6 +34,7 @@ jobs:
 
       - name: Publish blog
         run: |
+          git fetch
           git config --global user.email "me@ass.af"
           git config --global user.name "Assaf Sapir"
           git checkout gh-pages
