@@ -13,8 +13,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      - name: Check out GitHub Pages branch
+        uses: actions/checkout@v2
         with:
-          fetch-depth: 4
+          ref: gh-pages
+          path: ${{ env.OUTPUT_DIR }}
 
       - name: Setup Node
         uses: actions/setup-node@v2
@@ -35,13 +39,7 @@ jobs:
       - run: npm run build
 
       - name: Copy CNAME file
-        run: cp CNAME public/
-
-      - name: Check out GitHub Pages branch
-        uses: actions/checkout@v2
-        with:
-          ref: gh-pages
-          path: ${{ env.OUTPUT_DIR }}
+        run: cp CNAME ${{ env.OUTPUT_DIR }}/
 
       - name: 'Check for changes'
         run: |
