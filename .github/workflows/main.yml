@@ -48,7 +48,6 @@ jobs:
       - name: Publish blog
         if: steps.status.outputs.has_changes == '1'
         run: |
-          git fetch
           git config --global user.email "me@ass.af"
           git config --global user.name "Assaf Sapir"
           git checkout gh-pages
