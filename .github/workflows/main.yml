@@ -30,13 +30,18 @@ jobs:
             ${{ runner.os }}-node-
 
 
-      - run: git fetch
       - run: npm ci
       - run: npm run format
       - run: npm run build
 
       - name: Copy CNAME file
         run: cp CNAME public/
+
+      - name: Check out GitHub Pages branch
+        uses: actions/checkout@v2
+        with:
+          ref: gh-pages
+          path: ${{ env.OUTPUT_DIR }}
 
       - name: 'Check for changes'
         run: |
@@ -51,7 +56,6 @@ jobs:
         run: |
           git config --global user.email "me@ass.af"
           git config --global user.name "Assaf Sapir"
-          git checkout gh-pages --ours
           git add -f .
           git commit -m "Update blog files"
           git push -f origin gh-pages
