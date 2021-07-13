@@ -318,6 +318,11 @@ a:focus {
   text-align: justify;
 }
 
+.blog-post ul li {
+  list-style-type: none;
+  font-size: var(--fontSize-2);
+}
+
 .blog-post-nav ul {
   margin: var(--spacing-0);
 }
