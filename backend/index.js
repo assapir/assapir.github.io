@@ -6,9 +6,11 @@ const pool = new Pool({ connectionString })
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(cors({
-  origin: isProduction ? 'https://blog.ass.af' : '*',
-}))
+app.use(
+  cors({
+    origin: isProduction ? "https://blog.ass.af" : "*",
+  })
+)
 
 app.get("/comments", async (req, res) => {
   const results = await pool.query("SELECT * FROM comments ORDER BY date DESC")

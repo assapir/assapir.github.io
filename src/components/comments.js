@@ -6,7 +6,7 @@ const Comments = ({ commentsList, slug }) => {
     newComment: {
       name: "",
       text: "",
-      slug: slug,
+      slug,
       parentCommentId: null,
     },
     submitting: false,
@@ -97,41 +97,77 @@ const Comments = ({ commentsList, slug }) => {
     comments,
     newComment: { name, text },
   } = commentsState
+  const commentForm = () => {
+    return (
+      <form id="new-comment" onSubmit={onSubmitComment}>
+        <label for="name">
+          Name:
+          <input
+            type="text"
+            name="name"
+            id="name"
+            value={name}
+            onChange={handleChange}
+            maxLength="255"
+            placeholder="Name"
+            required
+          />
+        </label>
+        <label for="text">
+          Comment
+          <textarea
+            rows="2"
+            cols="5"
+            name="text"
+            id="text"
+            value={text}
+            onChange={handleChange}
+            placeholder="Comment"
+            required
+          />
+        </label>
+        <button
+          type="submit"
+          disabled={!name || !text || text.length < 20 || submitting}
+        >
+          שליחה
+        </button>
+      </form>
+    )
+  }
+
   return (
-    <form id="new-comment" onSubmit={onSubmitComment}>
-      <label for="name">
-        Name:
-        <input
-          type="text"
-          name="name"
-          id="name"
-          value={name}
-          onChange={handleChange}
-          maxLength="255"
-          placeholder="Name"
-          required
-        />
-      </label>
-      <label for="text">
-        Comment
-        <textarea
-          rows="2"
-          cols="5"
-          name="text"
-          id="text"
-          value={text}
-          onChange={handleChange}
-          placeholder="Comment"
-          required
-        />
-      </label>
-      <button
-        type="submit"
-        disabled={!name || !text || text.length < 20 || submitting}
-      >
-        Submit
-      </button>
-    </form>
+    <section id="comments">
+      {success || error ? showError() || showSuccess() : commentForm()}
+      {comments.length > 0 &&
+        comments
+          .filter(comment => !comment.parent_comment_id)
+          .map((comment, i) => {
+            let child
+            if (comment.id) {
+              child = comments.find(c => comment.id === c.parent_comment_id)
+            }
+            return (
+              <div className="comment" key={i}>
+                <header>
+                  <h2>{comment.name}</h2>
+                  <div className="comment-date">{comment.date}</div>
+                </header>
+                <p>{comment.text}</p>
+                {child && (
+                  <div className="comment reply">
+                    <header>
+                      <h3>{child.name}</h3>
+                      <div className="comment-date">{child.date}</div>
+                    </header>
+                    <p>{child.text}</p>
+                  </div>
+                )}
+              </div>
+            )
+          })}
+      <hr />
+    </section>
   )
 }
 

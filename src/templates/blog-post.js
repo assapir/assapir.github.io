@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { Link, graphql } from "gatsby"
+import Comments from "../components/comments"
 
 import Layout from "../components/layout"
 import Seo from "../components/seo"
@@ -10,15 +11,22 @@ const BlogPostTemplate = ({ data, location }) => {
   const currentSlug = post.fields.slug
   const { previous, next } = data
 
-  const [comments, setComments] = useState(null)
+  const [comments, setComments] = useState([])
+  const [hasCommentsErrors, setHasCommentsErrors] = useState(false)
   useEffect(() => {
     ;(async () => {
-      const response = await fetch(`/api/comments?slug=${currentSlug}`)
+      //const response = await fetch(`/api/comments?slug=${currentSlug}`)
       try {
-        const json = await response.json()
-        setComments(json)
+        //const json = await response.json()
+        setComments([
+          {
+            name: "assaf",
+            text: "adfasdfasdfasdfasdfsadfasdfasdfsadfasdf dfef erfe fdcvadf erf asd asdgfdsf ew",
+          },
+        ])
       } catch (error) {
-        console.log("unable to show comments")
+        console.log("unable to show comments", error)
+        setHasCommentsErrors(true)
       }
     })()
   }, [currentSlug])
@@ -45,6 +53,11 @@ const BlogPostTemplate = ({ data, location }) => {
         />
         <hr />
       </article>
+      <div>
+        {!hasCommentsErrors && (
+          <Comments commentsList={comments} slug={currentSlug} />
+        )}
+      </div>
       <nav className="blog-post-nav">
         <ul
           style={{
