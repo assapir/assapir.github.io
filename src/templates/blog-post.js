@@ -1,4 +1,4 @@
-import * as React from "react"
+import React, { useEffect, useState } from "react"
 import { Link, graphql } from "gatsby"
 
 import Layout from "../components/layout"
@@ -7,7 +7,18 @@ import Seo from "../components/seo"
 const BlogPostTemplate = ({ data, location }) => {
   const post = data.markdownRemark
   const siteTitle = data.site.siteMetadata?.title || `Title`
+  const currentSlug = post.fields.slug
   const { previous, next } = data
+
+  const [comments, setComments] = useState(null)
+  useEffect(() => {
+    ;(async () => {
+      const response = await fetch(`/api/comments?slug=${currentSlug}`)
+      const json = await response.json()
+
+      setComments(json)
+    })()
+  }, [currentSlug])
 
   return (
     <Layout location={location} title={siteTitle}>
@@ -82,6 +93,9 @@ export const pageQuery = graphql`
         title
         date
         description
+      }
+      fields {
+        slug
       }
     }
     previous: markdownRemark(id: { eq: $previousPostId }) {
