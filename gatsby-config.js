@@ -58,9 +58,9 @@ module.exports = {
         trackingIds: [
           "G-Y4SJQCS5F9", // Google Analytics / GA
         ],
-        pluginConfig:{
+        pluginConfig: {
           respectDNT: true,
-        }
+        },
       },
     },
     {
