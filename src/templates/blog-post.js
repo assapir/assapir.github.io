@@ -14,9 +14,12 @@ const BlogPostTemplate = ({ data, location }) => {
   useEffect(() => {
     ;(async () => {
       const response = await fetch(`/api/comments?slug=${currentSlug}`)
-      const json = await response.json()
-
-      setComments(json)
+      try {
+        const json = await response.json()
+        setComments(json)
+      } catch (error) {
+        console.log("unable to show comments")
+      }
     })()
   }, [currentSlug])
 
