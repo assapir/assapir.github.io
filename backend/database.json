@@ -1,0 +1,19 @@
+{
+  "dev": {
+    "driver": "pg",
+    "user": "postgres",
+    "password": "pg",
+    "host": "localhost",
+    "database": "commentsdb",
+    "port": "5432"
+  },
+  "prod": {
+    "driver": "pg",
+    "user": {"ENV": "PRODUCTION_USERNAME"},
+    "password": {"ENV": "PRODUCTION_PASSWORD"},
+    "host": "postgresql-comments.postgres.database.azure.com",
+    "database": "commentsdb",
+    "port": "5432",
+    "ssl": "true"
+  }
+}

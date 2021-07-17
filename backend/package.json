@@ -2,17 +2,19 @@
   "name": "gatsby-backend",
   "version": "0.0.1",
   "private": true,
-  "type": "module",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "migrate:up:dev": "db-migrate -e dev up",
+    "migrate:createdb": "db-migrate -e dev db:create commentsdb"
   },
   "keywords": [],
   "author": "Assaf Sapir <me@ass.af>",
   "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",
+    "db-migrate": "^0.11.12",
+    "db-migrate-pg": "^1.2.2",
     "express": "^4.17.1",
     "pg": "^8.6.0"
   }

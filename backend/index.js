@@ -13,7 +13,7 @@ app.use(
 )
 
 app.get("/comments", async (req, res) => {
-  const results = await pool.query("SELECT * FROM comments ORDER BY date DESC")
+  const results = await pool.query("SELECT * FROM comments ORDER BY create_date DESC")
   res.status(200).json(results.rows)
 })
 
@@ -21,7 +21,7 @@ app.get("/comments/:slug", async (req, res) => {
   const slug = req.params.slug
 
   const results = await pool.query(
-    "SELECT * FROM comments WHERE slug = $1 ORDER BY date DESC",
+    "SELECT * FROM comments WHERE slug = $1 ORDER BY create_date DESC",
     [slug]
   )
 
