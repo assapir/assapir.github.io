@@ -2,7 +2,18 @@ const express = require("express")
 const cors = require("cors")
 const { Pool } = require("pg")
 
-const pool = new Pool({ connectionString })
+const isProduction = process.env.NODE_ENV === "production"
+
+const dbConfig = {
+  user: process.env.DB_USER ?? "postgres",
+  password: process.env.DB_PASSWORD ?? "pg",
+  host: process.env.DB_HOST ?? "localhost",
+  port: 5432,
+  database: "commentsdb",
+  ssl: isProduction
+}
+
+const pool = new Pool(dbConfig)
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -13,7 +24,9 @@ app.use(
 )
 
 app.get("/comments", async (req, res) => {
-  const results = await pool.query("SELECT * FROM comments ORDER BY create_date DESC")
+  const results = await pool.query(
+    "SELECT * FROM comments ORDER BY create_date DESC"
+  )
   res.status(200).json(results.rows)
 })
 
@@ -61,6 +74,7 @@ app.delete("/comments/:id", async (req, res) => {
     .json({ status: "success", message: `Comment deleted with ID: ${id}` })
 })
 
-app.listen(3002, () => {
-  console.log(`Server listening`)
+const port = process.env.PORT || 3002
+app.listen(port, () => {
+  console.log(`Server listening on ${port}`)
 })

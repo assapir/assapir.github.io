@@ -1,6 +1,6 @@
-'use strict';
+"use strict"
 
-exports.up = async function(db) {
+exports.up = async function (db) {
   await db.runSql(`CREATE TABLE IF NOT EXISTS comments (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -12,8 +12,8 @@ exports.up = async function(db) {
   );`)
 
   return db.runSql(`CREATE INDEX comments_slug_idx ON comments (slug);`)
-};
+}
 
-exports.down = function(db) {
-  return db.runSql('DROP TABLE comments;');
-};
+exports.down = function (db) {
+  return db.runSql("DROP TABLE comments;")
+}
