@@ -12,7 +12,7 @@ const TagTemplate = ({ data, pageContext, location }) => {
     <Layout title={siteTitle} location={location}>
       <article>
         <header>
-          <h1>{`פוסטים עם התגית "${tag}":`}</h1>
+          <h1>{`פוסטים עם התגית '${tag}':`}</h1>
         </header>
         <div className="post-list-item">
           {posts.map(({ node }) => {
@@ -24,6 +24,7 @@ const TagTemplate = ({ data, pageContext, location }) => {
                 </h2>
                 <small>{node.frontmatter.date}</small>
                 <p dangerouslySetInnerHTML={{ __html: node.excerpt }} />
+                <br />
               </div>
             )
           })}
@@ -47,7 +48,7 @@ export const pageQuery = graphql`
       totalCount
       edges {
         node {
-          excerpt(pruneLength: 160)
+          excerpt(pruneLength: 200, format: HTML)
           fields {
             slug
           }

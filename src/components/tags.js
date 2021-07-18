@@ -6,9 +6,10 @@ export default function Tags({ tags }) {
     <div className="tags">
       תגיות:
       {` `}
-      {tags.map(tag => (
+      {tags.map((tag, i) => (
         <Link key={tag} href={`/tags/${tag}`}>
           {tag}
+          {tags.length > i + 1 ? `, ` : ` `}
         </Link>
       ))}
     </div>

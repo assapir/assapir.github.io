@@ -45,7 +45,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   // `context` is available in the template as a prop and as a variable in GraphQL
 
   if (posts.length > 0) {
-    const tags = new Set()
+    let tags = []
     posts.forEach((post, index) => {
       const previousPostId = index === 0 ? null : posts[index - 1].id
       const nextPostId = index === posts.length - 1 ? null : posts[index + 1].id
@@ -61,12 +61,12 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       })
 
       if (post.frontmatter.tags) {
-        tags.add(...post.frontmatter.tags)
+        tags = tags.concat(...post.frontmatter.tags)
       }
     })
-    tags.forEach(tag => {
+    new Set(tags).forEach(tag => {
       createPage({
-        path: `/tags/${tag}/`,
+        path: `/tags/${decodeURIComponent(tag)}/`,
         component: tagTemplate,
         context: {
           tag,
