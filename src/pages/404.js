@@ -1,5 +1,5 @@
 import * as React from "react"
-import { graphql } from "gatsby"
+import { graphql, Link } from "gatsby"
 
 import Layout from "../components/layout"
 import Seo from "../components/seo"
@@ -10,8 +10,9 @@ const NotFoundPage = ({ data, location }) => {
   return (
     <Layout location={location} title={siteTitle}>
       <Seo title="404: Not Found" />
-      <h1>404: Not Found</h1>
-      <p>You just hit a route that doesn&#39;t exist... the sadness.</p>
+      <h1>404: לא נמצא</h1>
+      <p>{`אתם בטוחים שניסיתם להגיע ל ${location.pathname}?`}</p>
+      <Link to="/">אין מקום כמו הבית</Link>
     </Layout>
   )
 }

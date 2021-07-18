@@ -10,7 +10,7 @@ const dbConfig = {
   host: process.env.DB_HOST ?? "localhost",
   port: 5432,
   database: "commentsdb",
-  ssl: isProduction
+  ssl: isProduction,
 }
 
 const pool = new Pool(dbConfig)
