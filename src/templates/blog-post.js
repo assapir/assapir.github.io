@@ -39,10 +39,10 @@ const BlogPostTemplate = ({ data, location }) => {
       >
         <header>
           <h1 itemProp="headline">{post.frontmatter.title}</h1>
-          <p>
+          <div>
             {new Date(post.frontmatter.date).toLocaleDateString()}
             {tags.length > 0 && <Tags tags={tags} />}
-          </p>
+          </div>
         </header>
         <section
           dangerouslySetInnerHTML={{ __html: post.html }}

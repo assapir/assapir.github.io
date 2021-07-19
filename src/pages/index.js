@@ -51,9 +51,7 @@ const BlogIndex = ({ data, location }) => {
                   <small>
                     {new Date(post.frontmatter.date).toLocaleDateString()}
                   </small>
-                  {tags.length > 0 && (
-                    <Tags tags={tags} />
-                  )}
+                  {tags.length > 0 && <Tags tags={tags} />}
                 </header>
                 <section>
                   <p

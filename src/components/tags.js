@@ -7,7 +7,7 @@ export default function Tags({ tags }) {
       תגיות:
       {` `}
       {tags.map((tag, i) => (
-        <Link key={tag} href={`/tags/${tag}`}>
+        <Link key={tag} to={`/tags/${tag}`}>
           {tag}
           {tags.length > i + 1 ? `, ` : ` `}
         </Link>

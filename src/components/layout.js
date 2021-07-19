@@ -22,11 +22,33 @@ const Layout = ({ location, title, children }) => {
       <footer dir="ltr">
         <Bio />© Assaf Sapir, {new Date().getFullYear()}, Built with
         {` `}
-        <a href="https://www.gatsbyjs.com" target="_blank" rel="noreferrer noopener">Gatsby</a>.
-        {` `}
-        Hosted with <a href="https://pages.github.com" target="_blank" rel="noreferrer noopener">GitHub Pages</a>.
+        <a
+          href="https://www.gatsbyjs.com"
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          Gatsby
+        </a>
+        .{` `}
+        Hosted with{" "}
+        <a
+          href="https://pages.github.com"
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          GitHub Pages
+        </a>
+        .
         <br />
-        Source code on my <a href="https://github.com/assapir/assapir.github.io" target="_blank" rel="noreferrer noopener">GitHub</a>.
+        Source code on my{" "}
+        <a
+          href="https://github.com/assapir/assapir.github.io"
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          GitHub
+        </a>
+        .
       </footer>
     </div>
   )

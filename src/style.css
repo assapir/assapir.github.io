@@ -29,6 +29,7 @@
   --spacing-32: 8rem;
   --fontFamily-sans: "Arimo", sans-serif;
   --fontFamily-serif: "Bellefair", serif;
+  --fontFamily-monospace: "Fira Code", monospace;
   --font-body: var(--fontFamily-serif);
   --font-heading: var(--fontFamily-sans);
   --fontWeight-normal: 400;
@@ -327,13 +328,39 @@ article h2 {
 }
 
 .gatsby-highlight {
-  margin-bottom: var(--spacing-8);
   direction: ltr;
+}
+
+code[class*="language-"],
+pre[class*="language-"] {
+  font-family: var(--fontFamily-monospace);
+}
+
+pre[class*="language-"].line-numbers {
+  padding-left: var(--spacing-8);
+}
+
+.line-numbers .line-numbers-rows {
+	border-right: none;
+  padding-top: var(--spacing-4);
+}
+
+.command-line-prompt {
+  border: none;
+  margin-right: var(--spacing-0);
+}
+
+.command-line-prompt > span[data-user]:before {
+	content: "[" attr(data-user) "@" attr(data-host) "]$";
 }
 
 .tag-list-item {
   font-size: var(--fontSize-2);
   direction: rtl;
+}
+
+header .tags {
+  margin-bottom: var(--spacing-8);
 }
 
 /* Media queries */
