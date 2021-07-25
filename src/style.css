@@ -59,6 +59,7 @@
   --color-text-light: #a3a9b3;
   --color-heading: #58a6ff;
   --color-accent: #d8d8d8;
+  --highlight: #F1C645;
 }
 
 /* HTML elements */
@@ -343,6 +344,11 @@ pre[class*="language-"].line-numbers {
 .line-numbers .line-numbers-rows {
 	border-right: none;
   padding-top: var(--spacing-4);
+}
+
+.gatsby-highlight-code-line {
+  background-color: var(--highlight);
+  color: var(--color-background);
 }
 
 .command-line-prompt {
