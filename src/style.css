@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Arimo&family=Bellefair&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Arimo&family=Fira+Code&family=Bellefair&display=swap");
 
 :root {
   --maxWidth-none: "none";
@@ -341,7 +341,7 @@ pre[class*="language-"].line-numbers {
 }
 
 .line-numbers .line-numbers-rows {
-	border-right: none;
+  border-right: none;
   padding-top: var(--spacing-4);
 }
 
@@ -351,7 +351,7 @@ pre[class*="language-"].line-numbers {
 }
 
 .command-line-prompt > span[data-user]:before {
-	content: "[" attr(data-user) "@" attr(data-host) "]$";
+  content: "[" attr(data-user) "@" attr(data-host) "]$";
 }
 
 .tag-list-item {
@@ -361,6 +361,38 @@ pre[class*="language-"].line-numbers {
 
 header .tags {
   margin-bottom: var(--spacing-8);
+}
+
+.navbar {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  background-color: var(--color-background);
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.35s;
+  cursor: pointer;
+}
+
+.navbar.open {
+  visibility: visible;
+  opacity: 1;
+}
+
+.navbar-item {
+  font-family: var(--font-heading);
+  list-style-type: none;
+  font-size: var(--fontSize-2);
+  padding: var(--spacing-4);
+  border-bottom: 1px solid var(--color-primary);
+  width: 100%;
+}
+
+.navbar-item > a {
+  display: block;
+  pointer-events: all;
 }
 
 /* Media queries */

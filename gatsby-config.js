@@ -10,6 +10,16 @@ module.exports = {
     social: {
       twitter: `meijin007`,
     },
+    menuLinks: [
+      {
+        name: "דף הבית",
+        link: `/`,
+      },
+      {
+        name: "כל התגיות",
+        link: `/tags`,
+      },
+    ],
   },
   plugins: [
     `gatsby-plugin-image`,
