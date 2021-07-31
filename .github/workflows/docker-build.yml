@@ -54,4 +54,3 @@ jobs:
           context: ./backend/
           push: ${{ github.ref == 'refs/heads/main' }}
           tags: blog.ass.af:latest
-          labels: ${{ steps.meta.outputs.labels }}
