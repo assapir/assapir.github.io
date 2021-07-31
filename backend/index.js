@@ -74,7 +74,7 @@ app.delete("/comments/:id", async (req, res) => {
     .json({ status: "success", message: `Comment deleted with ID: ${id}` })
 })
 
-const port = process.env.PORT || 3002
+const port = process.env.PORT || 3001
 app.listen(port, () => {
   console.log(`Server listening on ${port}`)
 })
