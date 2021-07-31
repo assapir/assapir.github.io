@@ -1,0 +1,70 @@
+
+name: Backend
+
+on:
+  push:
+    branches:
+    -  main
+  pull_request:
+    branches:
+    -  main
+
+jobs:
+  build:
+    name: Build comments API
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      has_changes: ${{ steps.status.outputs.has_changes }}
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Node
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+
+    - name: 'Check for changes'
+      run: |
+        if [ -n "$(git status --porcelain)" ]; then
+          echo "::set-output name=has_changes::1"
+        fi
+      id: status
+      working-directory: ./backend/
+
+    - name: Build backend
+      working-directory: ./backend/
+      run: npm ci --production
+
+  publish:
+    name: Push API Docker image to GitHub Packages
+    runs-on: ubuntu-latest
+    needs: build
+    if: needs.build.outputs.has_changes == '1'
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set image version based on tag
+        run: echo ::set-env name=TAG::$(date +%s)
+
+      - name: Push to GitHub Packages
+        uses: docker/build-push-action@v2
+        with:
+          context: ./backend/
+          push: ${{ github.ref == 'refs/heads/main' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
