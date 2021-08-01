@@ -48,7 +48,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: blog.ass.af/${{ github.repository }}
 
       - name: Push to GitHub Packages
         uses: docker/build-push-action@v2
