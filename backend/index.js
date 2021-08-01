@@ -3,6 +3,10 @@ const cors = require("cors")
 const rateLimit = require('express-rate-limit')
 const { Pool } = require("pg")
 
+process.on('unhandledRejection', reason => {
+  console.log(`Unhandled rejection: ${reason}`)
+})
+
 const isProduction = process.env.NODE_ENV === "production"
 
 const dbConfig = {
@@ -15,6 +19,10 @@ const dbConfig = {
 }
 
 const pool = new Pool(dbConfig)
+pool.on('error', err => {
+  console.error(`Error from database: ${err.message}`)
+})
+
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
