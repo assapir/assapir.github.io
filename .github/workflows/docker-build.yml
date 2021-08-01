@@ -10,28 +10,13 @@ on:
     -  main
 
 jobs:
-  build:
-    name: Build comments API
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Setup Node
-      uses: actions/setup-node@v2
-      with:
-        node-version: '16'
-
-    - name: Build backend
-      working-directory: ./backend/
-      run: npm ci --production
 
   publish:
     name: Push API Docker image to GitHub Packages
     runs-on: ubuntu-latest
-    needs: build
+    permissions:
+      contents: read
+      packages: write
 
     steps:
       - name: Check out the repo
@@ -48,7 +33,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: blog.ass.af/${{ github.repository }}
+          images: ghcr.io/${{ github.repository }}
 
       - name: Push to GitHub Packages
         uses: docker/build-push-action@v2
