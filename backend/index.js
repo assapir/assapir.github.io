@@ -31,7 +31,7 @@ app.use(async (req, res, next) => {
   // log the request time, url and incoming ip
   console.log(`${new Date()} ${req.method} ${req.path} - ${req.ip}`)
   next()
-}
+})
 
 app.get("/comments", async (req, res) => {
   const results = await pool.query(
