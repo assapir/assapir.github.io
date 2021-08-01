@@ -1,5 +1,6 @@
 const express = require("express")
 const cors = require("cors")
+const rateLimit = require('express-rate-limit')
 const { Pool } = require("pg")
 
 const isProduction = process.env.NODE_ENV === "production"
@@ -17,11 +18,19 @@ const pool = new Pool(dbConfig)
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 5, // 5 requests,
+}))
 app.use(
   cors({
     origin: isProduction ? "https://blog.ass.af" : "*",
   })
 )
+app.use(async (req, res, next) => {
+  // log the request time, url and incoming ip
+  console.log(`${new Date()} ${req.method} ${req.path} - ${req.ip}`)
+}
 
 app.get("/comments", async (req, res) => {
   const results = await pool.query(
