@@ -4,7 +4,7 @@ const rateLimit = require('express-rate-limit')
 const { Pool } = require("pg")
 
 process.on('unhandledRejection', reason => {
-  console.log(`Unhandled rejection: ${reason}`)
+  console.log(`Unhandled rejection: ${reason.message}: ${reason.stack}`)
 })
 
 const isProduction = process.env.NODE_ENV === "production"
@@ -35,7 +35,7 @@ app.use(
     origin: isProduction ? "https://blog.ass.af" : "*",
   })
 )
-app.use(async (req, res, next) => {
+app.use((req, res, next) => {
   // log the request time, url and incoming ip
   console.log(`${new Date()} ${req.method} ${req.path} - ${req.ip}`)
   next()
@@ -90,6 +90,11 @@ app.delete("/comments/:id", async (req, res) => {
   res
     .status(200)
     .json({ status: "success", message: `Comment deleted with ID: ${id}` })
+})
+
+app.use((err, req, res, next) => {
+  console.error(err.stack)
+  res.status(500).send('Something broke!')
 })
 
 const port = process.env.PORT || 3001
