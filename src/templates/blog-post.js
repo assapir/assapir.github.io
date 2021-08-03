@@ -99,7 +99,8 @@ export const pageQuery = graphql`
       html
       frontmatter {
         title
-        date
+        date(formatString: "l", locale: "he")
+        fromNow: date(fromNow: true, locale: "he")
         description
         tags
       }

@@ -49,7 +49,7 @@ const BlogIndex = ({ data, location }) => {
                     </Link>
                   </h2>
                   <small>
-                    {new Date(post.frontmatter.date).toLocaleDateString()}
+                    {`${post.frontmatter.date}, ${post.frontmatter.fromNow}`}
                   </small>
                   {tags.length > 0 && <Tags tags={tags} />}
                 </header>
@@ -82,14 +82,15 @@ export const pageQuery = graphql`
         title
       }
     }
-    allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
+    allMarkdownRemark(sort: {fields: [frontmatter___date], order: DESC}) {
       nodes {
         excerpt(pruneLength: 200, format: HTML)
         fields {
           slug
         }
         frontmatter {
-          date
+          date(formatString: "l", locale: "he")
+          fromNow: date(fromNow: true, locale: "he")
           title
           description
           tags
