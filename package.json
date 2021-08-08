@@ -8,10 +8,11 @@
     "url": "https://github.com/gatsbyjs/gatsby/issues"
   },
   "dependencies": {
+    "@fontsource/fira-code": "^4.5.0",
     "gatsby": "^3.9.1",
     "gatsby-plugin-feed": "^3.9.0",
     "gatsby-plugin-gatsby-cloud": "^2.9.0",
-    "gatsby-plugin-google-analytics": "^3.9.0",
+    "gatsby-plugin-google-gtag": "^3.9.0",
     "gatsby-plugin-image": "^1.9.0",
     "gatsby-plugin-manifest": "^3.9.0",
     "gatsby-plugin-offline": "^4.9.0",
@@ -25,6 +26,7 @@
     "gatsby-source-filesystem": "^3.9.0",
     "gatsby-transformer-remark": "^4.6.0",
     "gatsby-transformer-sharp": "^3.9.0",
+    "prism-themes": "^1.7.0",
     "prismjs": "^1.24.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

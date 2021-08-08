@@ -26,10 +26,25 @@ resource "azurerm_postgresql_database" "comments" {
   collation           = "en-US"
 }
 
+resource "azurerm_postgresql_firewall_rule" "home" {
+  name                = "home"
+  resource_group_name = azurerm_resource_group.rg.name
+  server_name         = azurerm_postgresql_server.comments.name
+  start_ip_address    = "46.31.99.71"
+  end_ip_address      = "46.31.99.71"
+}
+
+resource "azurerm_postgresql_firewall_rule" "azure" {
+  name                = "azure"
+  resource_group_name = azurerm_resource_group.rg.name
+  server_name         = azurerm_postgresql_server.comments.name
+  start_ip_address    = "0.0.0.0"
+  end_ip_address      = "0.0.0.0"
+}
+
 resource "random_password" "dbpassword" {
-  length           = 16
-  special          = true
-  override_special = "_%@"
+  length           = 48
+  special          = false
 }
 
 resource "azurerm_key_vault_secret" "dbpassword" {

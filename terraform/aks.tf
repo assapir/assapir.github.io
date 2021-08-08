@@ -41,7 +41,6 @@ resource "azurerm_subnet" "aks_subnet" {
   service_endpoints = [
     "Microsoft.ContainerRegistry",
     "Microsoft.KeyVault",
-    "Microsoft.Sql",
     "Microsoft.AzureActiveDirectory"
   ]
   address_prefixes = ["192.168.1.0/24"]

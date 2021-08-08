@@ -4,6 +4,7 @@ import Comments from "../components/comments"
 
 import Layout from "../components/layout"
 import Seo from "../components/seo"
+import Tags from "../components/tags"
 
 const BlogPostTemplate = ({ data, location }) => {
   const post = data.markdownRemark
@@ -31,6 +32,7 @@ const BlogPostTemplate = ({ data, location }) => {
     })()
   }, [currentSlug])
 
+  const tags = post.frontmatter.tags ?? []
   return (
     <Layout location={location} title={siteTitle}>
       <Seo
@@ -45,7 +47,10 @@ const BlogPostTemplate = ({ data, location }) => {
       >
         <header>
           <h1 itemProp="headline">{post.frontmatter.title}</h1>
-          <p>{new Date(post.frontmatter.date).toLocaleDateString()}</p>
+          <div>
+            {new Date(post.frontmatter.date).toLocaleDateString()}
+            {tags.length > 0 && <Tags tags={tags} />}
+          </div>
         </header>
         <section
           dangerouslySetInnerHTML={{ __html: post.html }}
@@ -107,8 +112,10 @@ export const pageQuery = graphql`
       html
       frontmatter {
         title
-        date
+        date(formatString: "l", locale: "he")
+        fromNow: date(fromNow: true, locale: "he")
         description
+        tags
       }
       fields {
         slug

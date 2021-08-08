@@ -1,19 +1,50 @@
 const express = require("express")
 const cors = require("cors")
+const rateLimit = require('express-rate-limit')
 const { Pool } = require("pg")
 
-const pool = new Pool({ connectionString })
+process.on('unhandledRejection', reason => {
+  console.log(`Unhandled rejection: ${reason.message}: ${reason.stack}`)
+})
+
+const isProduction = process.env.NODE_ENV === "production"
+
+const dbConfig = {
+  user: process.env.DB_USER ?? "postgres",
+  password: process.env.DB_PASSWORD ?? "pg",
+  host: process.env.DB_HOST ?? "localhost",
+  port: 5432,
+  database: "commentsdb",
+  ssl: isProduction,
+}
+
+const pool = new Pool(dbConfig)
+pool.on('error', err => {
+  console.error(`Error from database: ${err.message}`)
+})
+
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 5, // 5 requests,
+}))
 app.use(
   cors({
     origin: isProduction ? "https://blog.ass.af" : "*",
   })
 )
+app.use((req, res, next) => {
+  // log the request time, url and incoming ip
+  console.log(`${new Date()} ${req.method} ${req.path} - ${req.ip}`)
+  next()
+})
 
 app.get("/comments", async (req, res) => {
-  const results = await pool.query("SELECT * FROM comments ORDER BY date DESC")
+  const results = await pool.query(
+    "SELECT * FROM comments ORDER BY create_date DESC"
+  )
   res.status(200).json(results.rows)
 })
 
@@ -21,7 +52,7 @@ app.get("/comments/:slug", async (req, res) => {
   const slug = req.params.slug
 
   const results = await pool.query(
-    "SELECT * FROM comments WHERE slug = $1 ORDER BY date DESC",
+    "SELECT * FROM comments WHERE slug = $1 ORDER BY create_date DESC",
     [slug]
   )
 
@@ -61,6 +92,12 @@ app.delete("/comments/:id", async (req, res) => {
     .json({ status: "success", message: `Comment deleted with ID: ${id}` })
 })
 
-app.listen(3002, () => {
-  console.log(`Server listening`)
+app.use((err, req, res, next) => {
+  console.error(err.stack)
+  res.status(500).send('Something broke!')
+})
+
+const port = process.env.PORT || 3001
+app.listen(port, () => {
+  console.log(`Server listening on ${port}`)
 })

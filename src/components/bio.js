@@ -31,16 +31,6 @@ const Bio = () => {
 
   return (
     <div className="bio" dir="rtl">
-      {/* <StaticImage
-        className="bio-avatar"
-        layout="fixed"
-        formats={["AUTO", "WEBP", "AVIF"]}
-        src="../images/profile-pic.png"
-        width={50}
-        height={50}
-        quality={95}
-        alt="Profile picture"
-      /> */}
       {author?.name && (
         <span>
           נכתב על ידי <strong>{author.name}</strong> {author?.summary || null}

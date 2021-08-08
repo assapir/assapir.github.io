@@ -4,6 +4,7 @@ import { Link, graphql } from "gatsby"
 import Bio from "../components/bio"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
+import Tags from "../components/tags"
 
 const BlogIndex = ({ data, location }) => {
   useEffect(() => {
@@ -32,6 +33,7 @@ const BlogIndex = ({ data, location }) => {
       <ol style={{ listStyle: `none` }}>
         {posts.map(post => {
           const title = post.frontmatter.title || post.fields.slug
+          const tags = post.frontmatter.tags || []
 
           return (
             <li key={post.fields.slug}>
@@ -47,8 +49,9 @@ const BlogIndex = ({ data, location }) => {
                     </Link>
                   </h2>
                   <small>
-                    {new Date(post.frontmatter.date).toLocaleDateString()}
+                    {`${post.frontmatter.date}, ${post.frontmatter.fromNow}`}
                   </small>
+                  {tags.length > 0 && <Tags tags={tags} />}
                 </header>
                 <section>
                   <p
@@ -63,6 +66,9 @@ const BlogIndex = ({ data, location }) => {
           )
         })}
       </ol>
+      <h6>
+        <Link to="/tags/">לרשימת כל התגיות</Link>
+      </h6>
     </Layout>
   )
 }
@@ -76,16 +82,18 @@ export const pageQuery = graphql`
         title
       }
     }
-    allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
+    allMarkdownRemark(sort: {fields: [frontmatter___date], order: DESC}) {
       nodes {
-        excerpt(pruneLength: 200)
+        excerpt(pruneLength: 200, format: HTML)
         fields {
           slug
         }
         frontmatter {
-          date
+          date(formatString: "l", locale: "he")
+          fromNow: date(fromNow: true, locale: "he")
           title
           description
+          tags
         }
       }
     }
