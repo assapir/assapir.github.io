@@ -1,19 +1,50 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
+import { uri } from "../config"
 
-const Comments = ({ commentsList, slug }) => {
+const Comments = ({ slug }) => {
+  const newCommentInitialState = {
+    name: "",
+    text: "",
+    slug: encodeURIComponent(slug),
+    parentCommentId: null,
+  }
   const initialState = {
-    comments: commentsList || [],
-    newComment: {
-      name: "",
-      text: "",
-      slug,
-      parentCommentId: null,
-    },
+    comments: [],
+    newComment: newCommentInitialState,
     submitting: false,
     success: false,
     error: false,
   }
   const [commentsState, setCommentsState] = useState(initialState)
+  const [hasError, setHasError] = useState(false)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `${uri}/comments/${encodeURIComponent(slug)}`,
+          {
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            method: "GET",
+          }
+        )
+        const comments = await response.json()
+        setCommentsState(prevState => {
+          return {
+            ...prevState,
+            comments,
+          }
+        })
+      } catch (error) {
+        console.log("unable to show comments", error)
+        setHasError(true)
+      }
+    }
+    fetchData()
+  }, [slug])
 
   const onSubmitComment = async event => {
     event.preventDefault()
@@ -28,7 +59,7 @@ const Comments = ({ commentsList, slug }) => {
     const { newComment, comments } = commentsState
 
     try {
-      await fetch(`https://blbla.com/comments`, {
+      await fetch(`${uri}/comments`, {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -41,12 +72,7 @@ const Comments = ({ commentsList, slug }) => {
         return {
           ...prevState,
           comments: [newComment, ...comments],
-          newComment: {
-            name: "",
-            text: "",
-            slug,
-            parentCommentId: null,
-          },
+          newComment: newCommentInitialState,
           success: true,
           error: false,
         }
@@ -76,32 +102,27 @@ const Comments = ({ commentsList, slug }) => {
     })
   }
 
-  const showError = () =>
+  const showError = () => {
     error && (
       <div className="error">
-        <p>Comment failed to submit.</p>
+        <p>אוי לא!</p>
       </div>
     )
+  }
 
-  const showSuccess = () =>
+  const showSuccess = () => {
     success && (
       <div className="success">
-        <p>Comment submitted!</p>
+        <p>תגובתכם נשלחה בהצלחה!</p>
       </div>
     )
+  }
 
-  const {
-    submitting,
-    success,
-    error,
-    comments,
-    newComment: { name, text },
-  } = commentsState
   const commentForm = () => {
     return (
       <form id="new-comment" onSubmit={onSubmitComment}>
-        <label for="name">
-          Name:
+        <label htmlFor="name">
+          שם:
           <input
             type="text"
             name="name"
@@ -109,12 +130,12 @@ const Comments = ({ commentsList, slug }) => {
             value={name}
             onChange={handleChange}
             maxLength="255"
-            placeholder="Name"
+            placeholder="קראו לי ישמעאל"
             required
           />
         </label>
-        <label for="text">
-          Comment
+        <label htmlFor="text">
+          תגובה
           <textarea
             rows="2"
             cols="5"
@@ -122,7 +143,7 @@ const Comments = ({ commentsList, slug }) => {
             id="text"
             value={text}
             onChange={handleChange}
-            placeholder="Comment"
+            placeholder="תגובתכם?"
             required
           />
         </label>
@@ -136,7 +157,15 @@ const Comments = ({ commentsList, slug }) => {
     )
   }
 
-  return (
+  const {
+    submitting,
+    success,
+    error,
+    comments,
+    newComment: { name, text },
+  } = commentsState
+
+  return hasError ? null : (
     <section id="comments">
       {success || error ? showError() || showSuccess() : commentForm()}
       {comments.length > 0 &&

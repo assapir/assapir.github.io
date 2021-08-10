@@ -59,7 +59,7 @@
   --color-text-light: #a3a9b3;
   --color-heading: #58a6ff;
   --color-accent: #d8d8d8;
-  --highlight: #F1C645;
+  --highlight: #f1c645;
 }
 
 /* HTML elements */
@@ -342,7 +342,7 @@ pre[class*="language-"].line-numbers {
 }
 
 .line-numbers .line-numbers-rows {
-	border-right: none;
+  border-right: none;
   padding-top: var(--spacing-4);
 }
 
@@ -357,7 +357,7 @@ pre[class*="language-"].line-numbers {
 }
 
 .command-line-prompt > span[data-user]:before {
-	content: "[" attr(data-user) "@" attr(data-host) "]$";
+  content: "[" attr(data-user) "@" attr(data-host) "]$";
 }
 
 .tag-list-item {

@@ -5,6 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node .",
     "migrate:up:dev": "db-migrate -e dev up",
     "migrate:createdb": "db-migrate -e dev db:create commentsdb"
   },
