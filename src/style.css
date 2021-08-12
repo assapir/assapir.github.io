@@ -369,6 +369,10 @@ header .tags {
   margin-bottom: var(--spacing-8);
 }
 
+.comments-container {
+  display: flex;
+}
+
 /* Media queries */
 
 @media (max-width: 42rem) {

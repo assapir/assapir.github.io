@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, Fragment } from "react"
+import Comment from "./comment"
 import { uri } from "../config"
 
 const Comments = ({ slug }) => {
@@ -103,18 +104,22 @@ const Comments = ({ slug }) => {
   }
 
   const showError = () => {
-    error && (
-      <div className="error">
-        <p>אוי לא!</p>
-      </div>
+    return (
+      error && (
+        <div className="error">
+          <p>אוי לא! משהו ממש רע קרה</p>
+        </div>
+      )
     )
   }
 
   const showSuccess = () => {
-    success && (
-      <div className="success">
-        <p>תגובתכם נשלחה בהצלחה!</p>
-      </div>
+    return (
+      success && (
+        <div className="success">
+          <p>תגובתכם נשלחה בהצלחה!</p>
+        </div>
+      )
     )
   }
 
@@ -166,36 +171,23 @@ const Comments = ({ slug }) => {
   } = commentsState
 
   return hasError ? null : (
-    <section id="comments">
+    <section className="comments-container">
       {success || error ? showError() || showSuccess() : commentForm()}
       {comments.length > 0 &&
         comments
           .filter(comment => !comment.parent_comment_id)
-          .map((comment, i) => {
+          .map(comment => {
             let child
             if (comment.id) {
               child = comments.find(c => comment.id === c.parent_comment_id)
             }
             return (
-              <div className="comment" key={i}>
-                <header>
-                  <h2>{comment.name}</h2>
-                  <div className="comment-date">{comment.date}</div>
-                </header>
-                <p>{comment.text}</p>
-                {child && (
-                  <div className="comment reply">
-                    <header>
-                      <h3>{child.name}</h3>
-                      <div className="comment-date">{child.date}</div>
-                    </header>
-                    <p>{child.text}</p>
-                  </div>
-                )}
-              </div>
+              <Fragment key={comment.id}>
+                <Comment comment={comment} />
+                {child && <Comment comment={child} isChild={true} />}
+              </Fragment>
             )
           })}
-      <hr />
     </section>
   )
 }
