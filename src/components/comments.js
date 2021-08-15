@@ -97,6 +97,7 @@ const Comments = ({ slug }) => {
         ...prevState,
         newComment: {
           ...newComment,
+          create_date: new Date(),
           [name]: value,
         },
       }
@@ -125,7 +126,8 @@ const Comments = ({ slug }) => {
 
   const commentForm = () => {
     return (
-      <form id="new-comment" onSubmit={onSubmitComment}>
+      <form className="comments-form" onSubmit={onSubmitComment}>
+        הערות, מענות וכו'
         <label htmlFor="name">
           שם:
           <input
@@ -140,9 +142,9 @@ const Comments = ({ slug }) => {
           />
         </label>
         <label htmlFor="text">
-          תגובה
+          תגובה:
           <textarea
-            rows="2"
+            rows="4"
             cols="5"
             name="text"
             id="text"
@@ -153,6 +155,7 @@ const Comments = ({ slug }) => {
           />
         </label>
         <button
+          className="submit-button"
           type="submit"
           disabled={!name || !text || text.length < 20 || submitting}
         >

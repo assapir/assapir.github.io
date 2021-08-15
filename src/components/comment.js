@@ -5,7 +5,7 @@ export default Comment = ({ comment, isChild = false }) => {
     return (
       comment && (
         <header>
-          <h4>{`מאת: ${comment.name}`}</h4>
+          <h4 className="comment-name">{`מאת: ${comment.name}`}</h4>
           <div className="comment-date">
             מתאריך: {new Date(comment.create_date).toLocaleDateString()}
           </div>
