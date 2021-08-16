@@ -133,3 +133,9 @@ exports.createSchemaCustomization = ({ actions }) => {
     }
   `)
 }
+
+exports.onCreateWebpackConfig = ({ getConfig, actions }) => {
+  actions.setWebpackConfig({
+    devtool: "eval-source-map",
+  })
+}

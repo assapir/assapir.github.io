@@ -59,7 +59,8 @@
   --color-text-light: #a3a9b3;
   --color-heading: #58a6ff;
   --color-accent: #d8d8d8;
-  --highlight: #F1C645;
+  --highlight: #f1c645;
+  --color-error: #f44336;
 }
 
 /* HTML elements */
@@ -342,7 +343,7 @@ pre[class*="language-"].line-numbers {
 }
 
 .line-numbers .line-numbers-rows {
-	border-right: none;
+  border-right: none;
   padding-top: var(--spacing-4);
 }
 
@@ -357,7 +358,7 @@ pre[class*="language-"].line-numbers {
 }
 
 .command-line-prompt > span[data-user]:before {
-	content: "[" attr(data-user) "@" attr(data-host) "]$";
+  content: "[" attr(data-user) "@" attr(data-host) "]$";
 }
 
 .tag-list-item {
@@ -367,6 +368,92 @@ pre[class*="language-"].line-numbers {
 
 header .tags {
   margin-bottom: var(--spacing-8);
+}
+
+.success {
+  color: var(--highlight);
+  font-size: var(--fontSize-2);
+}
+.success > p {
+  margin-bottom: var(--spacing-0);
+}
+
+.error {
+  color: var(--color-error);
+  font-size: var(--fontSize-2);
+}
+
+.comments-container {
+  margin-top: var(--spacing-6);
+  margin-bottom: var(--spacing-10);
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  align-content: space-between;
+  color: var(--color-heading);
+}
+
+.comments-form {
+  display: flex;
+  font: var(--font-body);
+  align-content: stretch;
+  flex-direction: column;
+  font-size: var(--fontSize-3);
+}
+
+.comment-name {
+  margin-top: var(--spacing-6);
+  margin-bottom: var(--spacing-3);
+}
+
+.comment-date {
+  font-size: var(--fontSize-1);
+  color: var(--color-text);
+  font-family: var(--fontFamily-sans);
+}
+
+.comment-text {
+  font-size: var(--fontSize-3);
+  color: var(--color-text);
+  margin-right: var(--fontSize-3);
+}
+
+.submit-button {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  margin-top: var(--spacing-4);
+  width: 15%;
+  align-self: flex-end;
+}
+
+.submit-button[disabled] {
+  border: 1px solid #999999;
+  background-color: var(--color-accent);
+  color: var(--color-text-light);
+  cursor: not-allowed;
+}
+
+input[type="text"],
+select,
+textarea {
+  width: 100%;
+  padding: var(--spacing-2);
+  border: 1px solid #ccc;
+  background-color: var(--color-background);
+  color: var(--color-text-light);
+  border-radius: 4px;
+  box-sizing: border-box;
+  resize: none;
+}
+
+button:hover,
+button:focus,
+button:active {
+  cursor: pointer;
+}
+
+label {
+  font-size: var(--fontSize-3);
 }
 
 /* Media queries */

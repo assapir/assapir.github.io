@@ -1,19 +1,51 @@
-import React, { useState } from "react"
+import React, { useState, useEffect, Fragment } from "react"
+import Comment from "./comment"
+import { uri } from "../config"
 
-const Comments = ({ commentsList, slug }) => {
+const Comments = ({ slug }) => {
+  const newCommentInitialState = {
+    name: "",
+    text: "",
+    slug: encodeURIComponent(slug),
+    parentCommentId: null,
+  }
   const initialState = {
-    comments: commentsList || [],
-    newComment: {
-      name: "",
-      text: "",
-      slug: slug,
-      parentCommentId: null,
-    },
+    comments: [],
+    newComment: newCommentInitialState,
     submitting: false,
     success: false,
     error: false,
   }
   const [commentsState, setCommentsState] = useState(initialState)
+  const [hasError, setHasError] = useState(false)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `${uri}/comments/${encodeURIComponent(slug)}`,
+          {
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            method: "GET",
+          }
+        )
+        const comments = await response.json()
+        setCommentsState(prevState => {
+          return {
+            ...prevState,
+            comments,
+          }
+        })
+      } catch (error) {
+        console.log("unable to show comments", error)
+        setHasError(true)
+      }
+    }
+    fetchData()
+  }, [slug])
 
   const onSubmitComment = async event => {
     event.preventDefault()
@@ -28,7 +60,7 @@ const Comments = ({ commentsList, slug }) => {
     const { newComment, comments } = commentsState
 
     try {
-      await fetch(`https://blbla.com/comments`, {
+      await fetch(`${uri}/comments`, {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -41,12 +73,7 @@ const Comments = ({ commentsList, slug }) => {
         return {
           ...prevState,
           comments: [newComment, ...comments],
-          newComment: {
-            name: "",
-            text: "",
-            slug,
-            parentCommentId: null,
-          },
+          newComment: newCommentInitialState,
           success: true,
           error: false,
         }
@@ -70,25 +97,73 @@ const Comments = ({ commentsList, slug }) => {
         ...prevState,
         newComment: {
           ...newComment,
+          create_date: new Date(),
           [name]: value,
         },
       }
     })
   }
 
-  const showError = () =>
-    error && (
-      <div className="error">
-        <p>Comment failed to submit.</p>
-      </div>
+  const showError = () => {
+    return (
+      error && (
+        <div className="error">
+          <p>אוי לא! משהו ממש רע קרה</p>
+        </div>
+      )
     )
+  }
 
-  const showSuccess = () =>
-    success && (
-      <div className="success">
-        <p>Comment submitted!</p>
-      </div>
+  const showSuccess = () => {
+    return (
+      success && (
+        <div className="success">
+          <p>תגובתכם נשלחה בהצלחה!</p>
+        </div>
+      )
     )
+  }
+
+  const commentForm = () => {
+    return (
+      <form className="comments-form" onSubmit={onSubmitComment}>
+        הערות, מענות וכו'
+        <label htmlFor="name">
+          שם:
+          <input
+            type="text"
+            name="name"
+            id="name"
+            value={name}
+            onChange={handleChange}
+            maxLength="255"
+            placeholder="קראו לי ישמעאל"
+            required
+          />
+        </label>
+        <label htmlFor="text">
+          תגובה:
+          <textarea
+            rows="4"
+            cols="5"
+            name="text"
+            id="text"
+            value={text}
+            onChange={handleChange}
+            placeholder="תגובתכם?"
+            required
+          />
+        </label>
+        <button
+          className="submit-button"
+          type="submit"
+          disabled={!name || !text || text.length < 20 || submitting}
+        >
+          שליחה
+        </button>
+      </form>
+    )
+  }
 
   const {
     submitting,
@@ -97,41 +172,26 @@ const Comments = ({ commentsList, slug }) => {
     comments,
     newComment: { name, text },
   } = commentsState
-  return (
-    <form id="new-comment" onSubmit={onSubmitComment}>
-      <label for="name">
-        Name:
-        <input
-          type="text"
-          name="name"
-          id="name"
-          value={name}
-          onChange={handleChange}
-          maxLength="255"
-          placeholder="Name"
-          required
-        />
-      </label>
-      <label for="text">
-        Comment
-        <textarea
-          rows="2"
-          cols="5"
-          name="text"
-          id="text"
-          value={text}
-          onChange={handleChange}
-          placeholder="Comment"
-          required
-        />
-      </label>
-      <button
-        type="submit"
-        disabled={!name || !text || text.length < 20 || submitting}
-      >
-        Submit
-      </button>
-    </form>
+
+  return hasError ? null : (
+    <section className="comments-container">
+      {success || error ? showError() || showSuccess() : commentForm()}
+      {comments.length > 0 &&
+        comments
+          .filter(comment => !comment.parent_comment_id)
+          .map(comment => {
+            let child
+            if (comment.id) {
+              child = comments.find(c => comment.id === c.parent_comment_id)
+            }
+            return (
+              <Fragment key={comment.id}>
+                <Comment comment={comment} />
+                {child && <Comment comment={child} isChild={true} />}
+              </Fragment>
+            )
+          })}
+    </section>
   )
 }
 

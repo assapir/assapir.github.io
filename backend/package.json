@@ -5,8 +5,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "migrate:up:dev": "db-migrate -e dev up",
-    "migrate:createdb": "db-migrate -e dev db:create commentsdb"
+    "start": "node .",
+    "migrate:up:dev": "db-migrate -e dev up"
   },
   "keywords": [],
   "author": "Assaf Sapir <me@ass.af>",
@@ -17,6 +17,6 @@
     "db-migrate-pg": "^1.2.2",
     "express": "^4.17.1",
     "express-rate-limit": "^5.3.0",
-    "pg": "^8.6.0"
+    "pg": "^8.7.1"
   }
 }
