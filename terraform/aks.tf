@@ -19,7 +19,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   default_node_pool {
     name            = "agentpool"
     node_count      = var.agent_count
-    vm_size         = "Standard_D2_v2"
+    vm_size         = "Standard_D2_v4"
     os_disk_size_gb = 30
     vnet_subnet_id  = azurerm_subnet.aks_subnet.id
   }
