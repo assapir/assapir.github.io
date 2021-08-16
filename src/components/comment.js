@@ -1,7 +1,7 @@
 import React from "react"
 
 // eslint-disable-next-line no-native-reassign
-export default Comment = ({ comment, isChild = false }) => {
+const Comment = ({ comment, isChild = false }) => {
   const commentHeader = () => {
     return (
       comment && (
@@ -23,3 +23,5 @@ export default Comment = ({ comment, isChild = false }) => {
     </div>
   )
 }
+
+export default Comment
