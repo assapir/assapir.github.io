@@ -6,8 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node .",
-    "migrate:up:dev": "db-migrate -e dev up",
-    "migrate:createdb": "db-migrate -e dev db:create commentsdb"
+    "migrate:up:dev": "db-migrate -e dev up"
   },
   "keywords": [],
   "author": "Assaf Sapir <me@ass.af>",

@@ -371,8 +371,11 @@ header .tags {
 }
 
 .success {
-  color: var(--color-heading);
+  color: var(--highlight);
   font-size: var(--fontSize-2);
+}
+.success > p {
+  margin-bottom: var(--spacing-0);
 }
 
 .error {
@@ -381,7 +384,8 @@ header .tags {
 }
 
 .comments-container {
-  margin-top: var(--spacing-10);
+  margin-top: var(--spacing-6);
+  margin-bottom: var(--spacing-10);
   display: flex;
   flex-wrap: nowrap;
   flex-direction: column;
@@ -399,6 +403,19 @@ header .tags {
 
 .comment-name {
   margin-top: var(--spacing-6);
+  margin-bottom: var(--spacing-3);
+}
+
+.comment-date {
+  font-size: var(--fontSize-1);
+  color: var(--color-text);
+  font-family: var(--fontFamily-sans);
+}
+
+.comment-text {
+  font-size: var(--fontSize-3);
+  color: var(--color-text);
+  margin-right: var(--fontSize-3);
 }
 
 .submit-button {
@@ -409,7 +426,14 @@ header .tags {
   align-self: flex-end;
 }
 
-input[type=text],
+.submit-button[disabled] {
+  border: 1px solid #999999;
+  background-color: var(--color-accent);
+  color: var(--color-text-light);
+  cursor: not-allowed;
+}
+
+input[type="text"],
 select,
 textarea {
   width: 100%;
@@ -425,7 +449,7 @@ textarea {
 button:hover,
 button:focus,
 button:active {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 label {

@@ -1,5 +1,6 @@
 import React from "react"
 
+// eslint-disable-next-line no-native-reassign
 export default Comment = ({ comment, isChild = false }) => {
   const commentHeader = () => {
     return (
@@ -17,7 +18,7 @@ export default Comment = ({ comment, isChild = false }) => {
   return (
     <div className="comment">
       {commentHeader()}
-      <p className="commentText">{comment.text}</p>
+      <p className="comment-text">{comment.text}</p>
       <hr />
     </div>
   )
