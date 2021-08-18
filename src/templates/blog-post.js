@@ -31,7 +31,7 @@ const BlogPostTemplate = ({ data, location }) => {
         <header>
           <h1 itemProp="headline">{post.frontmatter.title}</h1>
           <div>
-            {new Date(post.frontmatter.date).toLocaleDateString()}
+            {`${post.frontmatter.date}, ${post.frontmatter.fromNow}`}
             {tags.length > 0 && <Tags tags={tags} />}
           </div>
         </header>
