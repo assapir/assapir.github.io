@@ -29,6 +29,15 @@ resource "azurerm_key_vault" "keyvault" {
     ]
   }
 
+  access_policy {
+    tenant_id = azuread_service_principal.terraform.application_tenant_id
+    object_id = azuread_service_principal.terraform.object_id
+
+    secret_permissions = [
+      "get"
+    ]
+  }
+
   network_acls {
     bypass                     = "AzureServices"
     default_action             = "Deny"

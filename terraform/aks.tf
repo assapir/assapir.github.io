@@ -8,7 +8,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     admin_username = "ubuntu"
 
     ssh_key {
-      key_data = file(var.ssh_public_key)
+      key_data = file(pathexpand(var.ssh_public_key))
     }
   }
 

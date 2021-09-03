@@ -43,8 +43,8 @@ resource "azurerm_postgresql_firewall_rule" "azure" {
 }
 
 resource "random_password" "dbpassword" {
-  length           = 48
-  special          = false
+  length  = 48
+  special = false
 }
 
 resource "azurerm_key_vault_secret" "dbpassword" {
