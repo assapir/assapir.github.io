@@ -4,7 +4,7 @@ export const dev = {
 }
 export const prod = {
   env: "production",
-  api: "https://api.ass.af",
+  api: "https://api2.ass.af",
 }
 
 const env = process.env.NODE_ENV === "production" ? prod : dev

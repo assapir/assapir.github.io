@@ -64,16 +64,16 @@ kind: Ingress
 metadata:
   name: comments-ingress
   annotations:
-    kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: traefik
     cert-manager.io/issuer: comments-api-issuer
+    traefik.ingress.kubernetes.io/router-tls: "true"
 spec:
   tls:
     - hosts:
-      - api.ass.af
+      - api2.ass.af
       secretName: comments-api-tls
   rules:
-  - host: api.ass.af
+  - host: api2.ass.af
     http:
       paths:
       - path: /
@@ -99,7 +99,7 @@ spec:
     - selector: {}
       http01:
         ingress:
-          class: nginx
+          class: traefik
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
@@ -110,6 +110,6 @@ spec:
   secretName: comments-api-tls
   issuerRef:
     name: comments-api-issuer
-  commonName: api.ass.af
+  commonName: api2.ass.af
   dnsNames:
-  - api.ass.af
+  - api2.ass.af
