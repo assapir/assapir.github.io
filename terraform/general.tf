@@ -37,13 +37,6 @@ resource "azurerm_key_vault" "keyvault" {
       "get"
     ]
   }
-
-  network_acls {
-    bypass                     = "AzureServices"
-    default_action             = "Deny"
-    ip_rules                   = ["46.31.99.71/32"]
-    virtual_network_subnet_ids = [azurerm_subnet.aks_subnet.id]
-  }
 }
 
 resource "azurerm_virtual_network" "primary_vnet" {
