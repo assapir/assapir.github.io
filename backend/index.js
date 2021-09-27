@@ -30,7 +30,7 @@ isProduction &&
   app.use(
     rateLimit({
       windowMs: 1 * 60 * 1000, // 1 minute
-      max: 5, // 5 requests,
+      max: 20, // 20 requests,
     })
   )
 app.use(
