@@ -45,7 +45,7 @@ app.use((req, res, next) => {
   next()
 })
 
-// app.use('/webhooks', require('./webhooks'));
+app.use('/webhooks', require('./webhooks'));
 
 app.get("/comments", async (req, res) => {
   const results = await pool.query(

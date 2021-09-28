@@ -1,6 +1,8 @@
 const { Router } = require('express')
+const { Client } = require('kubernetes-client')
 const router = Router()
 const crypto = require('crypto')
+const axios = require('axios').default
 
 router.post('/', async (req, res) => {
   try {
@@ -15,7 +17,17 @@ router.post('/', async (req, res) => {
     const signature = req.headers['X-Hub-Signature-256']
     verifySignature(signature, req.body)
 
-    const { package } = req.body
+    const { package: { package_version: { container_metadata: { tag: { name }, labels } } } } = req.body
+    if (name !== 'latest') {
+      console.warn('Not latest, ignoring')
+      return res.sendStatus(204)
+    }
+
+    const platforms = JSON.parse(labels?.all_labels?.['github.internal.platforms'])
+    if (!platforms?.some(p => p.architecture === 'amd64')) {
+      console.warn('Not amd64, ignoring')
+      return res.sendStatus(204)
+    }
 
     await deploy()
 
@@ -41,6 +53,16 @@ function verifySignature(signature, body) {
 }
 
 async function deploy() {
+  const client = new Client({ version: '1.14' })
+
+  try {
+    const getManifest = await axios.get('https://raw.githubusercontent.com/assapir/assapir.github.io/main/deployment.yaml')
+    const body = getManifest.data
+    const create = await client.apis.apps.v1.namespaces('default').deployments.post({ body })
+    console.log('Create:', create)
+  } catch (err) {
+    if (err.code !== 409) throw err
+  }
 
 }
 
