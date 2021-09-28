@@ -43,6 +43,11 @@ spec:
             secretKeyRef:
               name: db-params
               key: host
+        - name: GITHUB_WEBHOOK_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: webhooks-secret
+              key: secret
 ---
 apiVersion: v1
 kind: Service

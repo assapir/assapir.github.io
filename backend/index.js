@@ -38,11 +38,14 @@ app.use(
     origin: isProduction ? "https://blog.ass.af" : "*",
   })
 )
+
 app.use((req, res, next) => {
   // log the request time, url and incoming ip
   console.log(`${new Date()} ${req.method} ${req.path} - ${req.ip}`)
   next()
 })
+
+// app.use('/webhooks', require('./webhooks'));
 
 app.get("/comments", async (req, res) => {
   const results = await pool.query(
