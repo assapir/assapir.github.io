@@ -4,7 +4,7 @@ const crypto = require('crypto')
 const k8s = require('@kubernetes/client-node')
 
 const kc = new k8s.KubeConfig()
-kc.loadFromDefault()
+kc.loadFromCluster()
 const k8sApi = kc.makeApiClient(k8s.AppsV1Api)
 
 router.post('/', async (req, res) => {
