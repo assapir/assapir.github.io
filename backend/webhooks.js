@@ -36,7 +36,7 @@ router.post('/', async (req, res) => {
 
     console.log('Done, rolling the service')
   } catch (err) {
-    console.error(`Unable to do anything with GitHub webhook, ${err.message}, ${err.stack}`)
+    console.error(`Unable to do anything with GitHub webhook, ${err.message}`)
   }
   return res.sendStatus(204)
 })
@@ -66,7 +66,7 @@ async function deploy () {
     await rollout(deployment)
   } catch (err) {
     if (err.statusCode !== 409) {
-      console.error(`Unable to deploy, ${err.message}, ${err.statusCode}, ${err.body}`)
+      console.error(`Unable to deploy, ${err.message}, status: ${err.statusCode}, ${JSON.stringify(err.body, null, 2)}`)
       throw err
     }
     console.log('Deployment comments-api already exists, ignoring')
