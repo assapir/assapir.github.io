@@ -1,8 +1,12 @@
 const { Router } = require('express')
-const { Client } = require('kubernetes-client')
 const router = Router()
 const crypto = require('crypto')
-const axios = require('axios').default
+const k8s = require('@kubernetes/client-node');
+const kc = new k8s.KubeConfig();
+kc.loadFromDefault();
+const k8sApi = kc.makeApiClient(k8s.AppsV1Api);
+const deploymentName = 'comments-api'
+const namespace = 'default'
 
 router.post('/', async (req, res) => {
   try {
@@ -53,17 +57,31 @@ function verifySignature(signature, body) {
 }
 
 async function deploy() {
-  const client = new Client({ version: '1.14' })
-
   try {
-    const getManifest = await axios.get('https://raw.githubusercontent.com/assapir/assapir.github.io/main/deployment.yaml')
-    const body = getManifest.data
-    const create = await client.apis.apps.v1.namespaces('default').deployments.post({ body })
-    console.log('Create:', create)
+    // find the particular deployment
+    const res = await k8sApi.readNamespacedDeployment(deploymentName, namespace)
+    const deployment = res.body
+    console.log(`Found deployment ${deployment.metadata.name}`)
+
+    await rollout(deployment)
   } catch (err) {
-    if (err.code !== 409) throw err
+    if (err.statusCode === 409) {
+      console.log(`Deployment ${deploymentName} already exists, ignoring`)
+      return
+    }
+    throw err
   }
 
+}
+
+/**
+ *
+ * @param {k8s.V1Deployment} deployment
+ */
+async function rollout(deployment) {
+  deployment.spec.template.metadata.annotations['kubectl.kubernetes.io/restartedAt'] = new Date().toISOString()
+  // replace
+  await k8sApi.replaceNamespacedDeployment(deployment.metadata.name, deployment.metadata.namespace, deployment)
 }
 
 module.exports = router
