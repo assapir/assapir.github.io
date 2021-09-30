@@ -26,7 +26,7 @@ router.post('/', async (req, res) => {
       return res.sendStatus(204)
     }
 
-    const platforms = JSON.parse(labels?.all_labels?.['github.internal.platforms'])
+    const platforms = JSON.parse(labels?.all_labels['github.internal.platforms'])
     if (!platforms?.some(p => p.architecture === 'amd64')) {
       console.warn('Not amd64, ignoring')
       return res.sendStatus(204)
