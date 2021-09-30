@@ -36,7 +36,7 @@ router.post('/', async (req, res) => {
 
     console.log('Done, rolling the service')
   } catch (err) {
-    console.error(`Unable to do anything with GitHub webhook, ${err.message}`)
+    console.error(`Unable to do anything with GitHub webhook, ${err.message}, ${err.stack}`)
   }
   return res.sendStatus(204)
 })
