@@ -69,6 +69,7 @@ async function deploy () {
       console.log('Deployment comments-api already exists, ignoring')
       return
     }
+    console.error(`Unable to deploy, ${err.message}, ${err.statusCode}, ${err.body}`)
     throw err
   }
 }
