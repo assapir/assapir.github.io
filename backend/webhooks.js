@@ -65,12 +65,11 @@ async function deploy () {
 
     await rollout(deployment)
   } catch (err) {
-    if (err.statusCode === 409) {
-      console.log('Deployment comments-api already exists, ignoring')
-      return
+    if (err.statusCode !== 409) {
+      console.error(`Unable to deploy, ${err.message}, ${err.statusCode}, ${err.body}`)
+      throw err
     }
-    console.error(`Unable to deploy, ${err.message}, ${err.statusCode}, ${err.body}`)
-    throw err
+    console.log('Deployment comments-api already exists, ignoring')
   }
 }
 
