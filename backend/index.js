@@ -24,7 +24,13 @@ pool.on('error', err => {
 })
 
 const app = express()
-app.use(express.json())
+// Hack for getting the raw body
+app.use(express.json({
+  verify: (req, res, buf) => {
+    req.rawBody = buf
+  }
+}))
+
 app.use(express.urlencoded({ extended: true }))
 isProduction &&
   app.use(

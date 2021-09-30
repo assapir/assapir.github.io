@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
     }
 
     const signature = req.headers['x-hub-signature-256']
-    verifySignature(signature, req.body)
+    verifySignature(signature, req.rawBody)
 
     const { package: { package_version: { container_metadata: { tag: { name }, labels } } } } = req.body
     if (name !== 'latest') {
@@ -43,6 +43,7 @@ router.post('/', async (req, res) => {
 
 // Verify github sha256 webhook signature
 function verifySignature (signature, body) {
+  console.log('Verifying signature')
   if (!process.env.GITHUB_WEBHOOK_SECRET) {
     throw new Error('GITHUB_WEBHOOK_SECRET not set')
   }
