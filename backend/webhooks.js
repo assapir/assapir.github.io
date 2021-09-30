@@ -1,12 +1,11 @@
 const { Router } = require('express')
 const router = Router()
 const crypto = require('crypto')
-const k8s = require('@kubernetes/client-node');
-const kc = new k8s.KubeConfig();
-kc.loadFromDefault();
-const k8sApi = kc.makeApiClient(k8s.AppsV1Api);
-const deploymentName = 'comments-api'
-const namespace = 'default'
+const k8s = require('@kubernetes/client-node')
+
+const kc = new k8s.KubeConfig()
+kc.loadFromDefault()
+const k8sApi = kc.makeApiClient(k8s.AppsV1Api)
 
 router.post('/', async (req, res) => {
   try {
@@ -14,7 +13,7 @@ router.post('/', async (req, res) => {
 
     const event = req.headers['X-GitHub-Event']
     if (event !== 'package') {
-      console.warn('Not a package event, ignoring')
+      console.warn(`Not a package event, got headers: ${JSON.stringify(req.headers, null, 2)}, ignoring`)
       return res.sendStatus(204)
     }
 
@@ -35,7 +34,7 @@ router.post('/', async (req, res) => {
 
     await deploy()
 
-    console.log(`Done, `)
+    console.log('Done, rolling the service')
   } catch (err) {
     console.error(`Unable to do anything with GitHub webhook, ${err.message}`)
   }
@@ -43,7 +42,7 @@ router.post('/', async (req, res) => {
 })
 
 // Verify github sha256 webhook signature
-function verifySignature(signature, body) {
+function verifySignature (signature, body) {
   if (!process.env.GITHUB_WEBHOOK_SECRET) {
     throw new Error('GITHUB_WEBHOOK_SECRET not set')
   }
@@ -56,29 +55,27 @@ function verifySignature(signature, body) {
   }
 }
 
-async function deploy() {
+async function deploy () {
   try {
     // find the particular deployment
-    const res = await k8sApi.readNamespacedDeployment(deploymentName, namespace)
+    const res = await k8sApi.readNamespacedDeployment('comments-api', 'default')
     const deployment = res.body
     console.log(`Found deployment ${deployment.metadata.name}`)
 
     await rollout(deployment)
   } catch (err) {
     if (err.statusCode === 409) {
-      console.log(`Deployment ${deploymentName} already exists, ignoring`)
+      console.log('Deployment comments-api already exists, ignoring')
       return
     }
     throw err
   }
-
 }
 
 /**
- *
  * @param {k8s.V1Deployment} deployment
  */
-async function rollout(deployment) {
+async function rollout (deployment) {
   deployment.spec.template.metadata.annotations['kubectl.kubernetes.io/restartedAt'] = new Date().toISOString()
   // replace
   await k8sApi.replaceNamespacedDeployment(deployment.metadata.name, deployment.metadata.namespace, deployment)
