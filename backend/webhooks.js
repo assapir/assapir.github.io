@@ -11,13 +11,13 @@ router.post('/', async (req, res) => {
   try {
     console.log('Incoming webhook, processing!')
 
-    const event = req.headers['X-GitHub-Event']
+    const event = req.headers['x-github-event']
     if (event !== 'package') {
       console.warn(`Not a package event, got headers: ${JSON.stringify(req.headers, null, 2)}, ignoring`)
       return res.sendStatus(204)
     }
 
-    const signature = req.headers['X-Hub-Signature-256']
+    const signature = req.headers['x-hub-signature-256']
     verifySignature(signature, req.body)
 
     const { package: { package_version: { container_metadata: { tag: { name }, labels } } } } = req.body
