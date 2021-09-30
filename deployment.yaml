@@ -118,3 +118,27 @@ spec:
   commonName: api2.ass.af
   dnsNames:
   - api2.ass.af
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  namespace: default
+  name: deployer
+rules:
+- apiGroups: ["apps"]
+  resources: ["deployments", "status"]
+  verbs: ["get", "list", "update", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: deployer
+subjects:
+  - kind: ServiceAccount
+    name: default
+    namespace: default
+roleRef:
+  kind: ClusterRole
+  name: deployer
+  apiGroup: rbac.authorization.k8s.io
+---
