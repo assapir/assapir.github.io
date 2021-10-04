@@ -1,7 +1,20 @@
 const express = require('express')
 const cors = require('cors')
 const rateLimit = require('express-rate-limit')
+const client = require('prom-client')
 const { Pool } = require('pg')
+
+const register = new client.Registry()
+register.setDefaultLabels({ app: 'comments-api-exporter' })
+client.collectDefaultMetrics({ register, prefix: 'comments_api_' })
+const httpRequestTimer = new client.Histogram({
+  name: 'http_request_duration_seconds',
+  help: 'Duration of HTTP requests in seconds',
+  labelNames: ['method', 'route', 'code'],
+  buckets: [0.1, 0.3, 0.5, 0.7, 1, 3, 5, 7, 10] // 0.1 to 10 seconds
+})
+
+register.registerMetric(httpRequestTimer)
 
 process.on('unhandledRejection', reason => {
   console.log(`Unhandled rejection: ${reason.message}: ${reason.stack}`)
@@ -45,13 +58,32 @@ app.use(
   })
 )
 
-app.use((req, res, next) => {
-  // log the request time, method and path
-  console.log(`${new Date()} ${req.method} ${req.path}`)
+app.use(async (req, res, next) => {
+  const end = httpRequestTimer.startTimer()
+
+  res.on('finish', function () {
+    end({ route: req.path, code: res.statusCode, method: req.method })
+  })
+
   next()
 })
 
+app.use((req, res, next) => {
+  // log the request time, method and path
+  console.log(`${new Date()} ${req.method} ${req.path}`)
+
+  next()
+})
+
+
 app.use('/webhooks', require('./webhooks'))
+
+app.get('/metrics', async (req, res) => {
+  res.set('Content-Type', register.contentType)
+  res.end(await register.metrics())
+})
+
+
 
 app.get('/comments', async (req, res) => {
   const results = await pool.query(
