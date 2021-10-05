@@ -69,8 +69,10 @@ app.use(async (req, res, next) => {
 })
 
 app.use((req, res, next) => {
-  // log the request time, method and path
-  console.log(`${new Date()} ${req.method} ${req.path}`)
+  if (req.path !== '/mtrics') {
+    // log the request time, method and path
+    console.log(`${new Date()} ${req.method} ${req.path}`)
+  }
 
   next()
 })
