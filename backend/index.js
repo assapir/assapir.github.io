@@ -62,14 +62,14 @@ app.use(async (req, res, next) => {
   const end = httpRequestTimer.startTimer()
 
   res.on('finish', function () {
-    end({ route: req.path, code: res.statusCode, method: req.method })
+    end({ route: decodeURI(req.path), code: res.statusCode, method: req.method.toUpperCase() })
   })
 
   next()
 })
 
 app.use((req, res, next) => {
-  if (req.path !== '/mtrics') {
+  if (req.path !== '/metrics') {
     // log the request time, method and path
     console.log(`${new Date()} ${req.method} ${req.path}`)
   }
