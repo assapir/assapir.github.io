@@ -58,18 +58,14 @@ app.use(
   })
 )
 
-app.use(async (req, res, next) => {
-  const end = httpRequestTimer.startTimer()
-
-  res.on('finish', function () {
-    end({ route: decodeURIComponent(req.path), code: res.statusCode, method: req.method.toUpperCase() })
-  })
-
-  next()
-})
-
+// Logging and metrics middleware
 app.use((req, res, next) => {
   if (req.path !== '/metrics') {
+    const end = httpRequestTimer.startTimer()
+
+    res.on('finish', function () {
+      end({ route: decodeURIComponent(req.path), code: res.statusCode, method: req.method.toUpperCase() })
+    })
     // log the request time, method and path
     console.log(`${new Date()} ${req.method} ${req.path}`)
   }
