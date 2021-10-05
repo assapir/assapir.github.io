@@ -62,7 +62,7 @@ app.use(async (req, res, next) => {
   const end = httpRequestTimer.startTimer()
 
   res.on('finish', function () {
-    end({ route: decodeURI(req.path), code: res.statusCode, method: req.method.toUpperCase() })
+    end({ route: decodeURIComponent(req.path), code: res.statusCode, method: req.method.toUpperCase() })
   })
 
   next()
