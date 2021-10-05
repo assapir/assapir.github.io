@@ -1,0 +1,16 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: comments
+  namespace: monitoring
+  labels:
+    k8s-app: comments
+spec:
+  selector:
+    matchLabels:
+      app: comments
+  namespaceSelector:
+    matchNames:
+    - default
+  endpoints:
+  - port: web
