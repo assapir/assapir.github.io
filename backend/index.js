@@ -6,7 +6,7 @@ const { Pool } = require('pg')
 
 const register = new client.Registry()
 register.setDefaultLabels({ app: 'comments-api-exporter' })
-client.collectDefaultMetrics({ register, prefix: 'comments_api_' })
+client.collectDefaultMetrics({ register, prefix: 'comments_' })
 const httpRequestTimer = new client.Histogram({
   name: 'http_request_duration_seconds',
   help: 'Duration of HTTP requests in seconds',
