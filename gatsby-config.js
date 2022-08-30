@@ -121,6 +121,7 @@ module.exports = {
               }
             `,
             output: "/rss.xml",
+            title: "Assaf Sapir blog"
           },
         ],
       },
