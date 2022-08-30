@@ -1,5 +1,1 @@
-{
-    "componentChunkName": "component---src-templates-tag-js",
-    "path": "/tags/k8s/",
-    "result": {"data":{"site":{"siteMetadata":{"title":"מחשבות על תכנות"}},"allMarkdownRemark":{"totalCount":1,"edges":[{"node":{"excerpt":"<p>כמו שכתבתי ב<a href=\"https://blog.ass.af/general/terraform/\">פוסט קודם</a> יש לי, כעובד מיקרוסופט, 15…</p>","fields":{"slug":"/general/k3s/"},"frontmatter":{"date":"2021-09-16","title":"להשתמש בכח של כמה עוגות יחד"}}}]}},"pageContext":{"tag":"k8s"}},
-    "staticQueryHashes": ["3257411868"]}
+{"componentChunkName":"component---src-templates-tag-js","path":"/tags/k8s/","result":{"data":{"site":{"siteMetadata":{"title":"מחשבות על תכנות"}},"allMarkdownRemark":{"totalCount":1,"edges":[{"node":{"excerpt":"<p>כמו שכתבתי ב<a href=\"https://blog.ass.af/general/terraform/\">פוסט קודם</a> יש לי, כעובד מיקרוסופט, 15…</p>","fields":{"slug":"/general/k3s/"},"frontmatter":{"date":"2021-09-16","title":"להשתמש בכח של כמה עוגות יחד"}}}]}},"pageContext":{"tag":"k8s"}},"staticQueryHashes":["3257411868"]}
